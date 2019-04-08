@@ -25,6 +25,9 @@ public class JumpNumController {
     @RequestMapping(value = "/getNum")
     @ResponseBody
     public int jumpNum(HttpServletRequest request, HttpServletResponse response, String shortLinkHttp) {
+        if(shortLinkHttp.length() > 60) {
+            return -1;
+        }
         logger.info("getVisits :" + shortLinkHttp);
         String shortLink = shortLinkHttp.replace(LinkUtil.getPrefix(request)+"/","");
         return jumpService.getVisitsNum(request, response, shortLink);

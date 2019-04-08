@@ -41,7 +41,12 @@
             cache: false,
             dataType:"text",
             success: function (data) {
-                $("#shortLink").val(data+"次");
+                if(data == -1) {
+                    alert("不存在该短链接");
+                    return;
+                }else {
+                    $("#shortLink").val(data+"次");
+                }
             },
             error: function (data) {
                 alert("错了吧！！")

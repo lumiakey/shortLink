@@ -7,8 +7,6 @@ public class LinkUtil {
         StringBuilder prefix = new StringBuilder();
         prefix.append("http://");
         prefix.append(request.getServerName());
-        prefix.append(":");
-        prefix.append(request.getServerPort());
         return prefix;
     }
 

@@ -22,6 +22,12 @@ public class ConversionController {
     @RequestMapping(value = "/getShortLink")
     @ResponseBody
     public String getShortLink(HttpServletRequest request, String URl, String custom, int validity, int length) {
+        if(!custom.equals("NULLCUSTOM") && length !=8) {
+            return "Custom short links and custom lengths are mutually exclusive options";
+        }
+        if(length > 60) {
+            return "Custom long links must be less than 60 bits long";
+        }
         StringBuilder prefix = LinkUtil.getPrefix(request);
         prefix.append(request.getContextPath());
         prefix.append("/");
