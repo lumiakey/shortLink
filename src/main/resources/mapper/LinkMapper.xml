@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.what2e.dao.LinkMappingDao">
+    <resultMap id="mappingResult" type="LinkMapping">
+        <result property="id" column="id"/>
+        <result property="shortLink" column="short_link"/>
+        <result property="longLink" column="long_link"/>
+        <result property="createTime" column="create_time"/>
+        <result property="failureTime" column="failure_time"/>
+        <result property="validity" column="validity"/>
+        <result property="visits" column="visits"/><!--
+        <association property="roleInfoList" column="id" select="findRoleInfoByUserId"/>-->
+    </resultMap>
+
+    <select id="selectVisits" parameterType="String" resultType="Integer" statementType="STATEMENT">
+        SELECT `visits`
+        FROM ${tableName}
+        WHERE
+        short_link = ${shortLink}
+    </select>
+
+    <select id="select" parameterType="String" resultMap="mappingResult" statementType="STATEMENT">
+        SELECT *
+        FROM ${tableName}
+        WHERE
+        short_link = ${shortLink}
+    </select>
+
+    <insert id="insert" parameterType="String" statementType="STATEMENT">
+        INSERT INTO ${tableName}
+        (short_link,long_link,create_time,failure_time)
+        VALUES
+        (${shortLink},
+         ${longLink},
+         ${createTime},
+         ${failureTime})
+    </insert>
+
+    <update id="createTable" parameterType="String" statementType="STATEMENT">
+        CREATE TABLE ${tableName} (
+            `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+            `short_link` VARCHAR(255) NOT NULL COMMENT '短字符串',
+            `long_link` VARCHAR(255) NOT NULL COMMENT '长字符串',
+            `create_time` VARCHAR(255) NOT NULL COMMENT '创建时间',
+            `failure_time` VARCHAR(255) NOT NULL COMMENT '失效时间',
+            `validity` INT NOT NULL DEFAULT '1' COMMENT '有效性 0失效 1有效',
+            `visits` INT NOT NULL DEFAULT '0' COMMENT '访问次数',
+            PRIMARY KEY (`id`)
+        )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='映射关系表';
+  </update>
+
+    <update id="upVisits" parameterType="String" statementType="STATEMENT">
+        UPDATE ${tableName}
+        SET
+          `visits` = `visits` + 1
+          WHERE
+          `short_link` = ${shortLink}
+    </update>
+
+</mapper>
